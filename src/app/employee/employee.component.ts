@@ -35,10 +35,14 @@ export class EmployeeComponent implements  OnDestroy{
     this.subscription.add(this.service.createEmployee(employee).subscribe( response => {
 
       console.log("Successful", response)
-      this.router.navigate(['/employees']);
+      this.handleCancelButton();
     }, error => {
       console.log("Fail", error)
     }))
+  }
+
+  handleCancelButton() {
+    this.router.navigate(['/employees']);
   }
 
   ngOnDestroy(): void {

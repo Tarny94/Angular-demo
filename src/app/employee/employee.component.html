@@ -21,7 +21,9 @@
         <mat-option value="ADMIN">ADMIN</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-raised-button class="custom-mat-form-button" color="primary" (click)="onSubmit()" [disabled]="!firstName || !lastName || !email || !authority">SUBMIT</button>
+    <div class="buttons-contain">
+      <button mat-raised-button class="custom-mat-form-button" color="primary" (click)="onSubmit()" [disabled]="!firstName || !lastName || !email || !authority">SUBMIT</button>
+      <button mat-raised-button class="custom-mat-form-button" (click)="handleCancelButton()" >Cancel</button></div>
   </div>
 </div>
 
