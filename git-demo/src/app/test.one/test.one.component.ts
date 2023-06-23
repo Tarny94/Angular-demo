@@ -14,4 +14,5 @@ export class TestOneComponent {
     rebase3 : string =""
     rebase5: string = ""
     rebase6: string = ""
+    rebase7: string = ""
 }
