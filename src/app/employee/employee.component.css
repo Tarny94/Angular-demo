@@ -33,3 +33,12 @@
 .custom-mat-form-button{
     margin: 10px;
 }
+
+#is-invalid {
+  color: red;
+}
+
+.error-fields {
+  color: red;
+  font-size:13px;
+}

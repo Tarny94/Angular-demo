@@ -1,8 +1,21 @@
 import {Component, OnDestroy, OnInit, VERSION} from '@angular/core';
 import {EmployeeService} from "../employee.service";
-import {from, map, Observable, of, Subscription, take, tap} from "rxjs";
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  from,
+  map,
+  Observable,
+  of,
+  shareReplay,
+  Subscription,
+  take,
+  tap
+} from "rxjs";
 import {IEmployee} from "../employee";
 import {Router} from "@angular/router";
+import { MatTableDataSource } from '@angular/material/table';
 import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
@@ -10,24 +23,35 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
   templateUrl: './display-employees.component.html',
   styleUrls: ['./display-employees.component.css']
 })
-export class DisplayEmployeesComponent implements OnInit, OnDestroy{
-  subscription : Subscription = new Subscription();
+export class DisplayEmployeesComponent implements OnInit{
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'authority'];
-  employeeData : IEmployee[] = [] ;
+
+  filterByName= new BehaviorSubject<string>("");
+  filterByNameAction$ = this.filterByName.asObservable();
+
+  dataSource!: MatTableDataSource<IEmployee>;
 
   name = "Angular "+ VERSION.major
 
-  filterByName: string = "";
+  filterName: string = "";
+
+
+  employees$  = combineLatest(
+    [this.service.employees$, this.filterByNameAction$]
+  ).pipe(
+       tap(item => console.log("#item" ,item)),
+         map(([items, filteredName]) =>
+           items.filter(item  => filteredName !== ""? item.firstName.toLowerCase().includes(filteredName.toLowerCase())  : true)
+         ),
+  ) ;
 
   constructor(private service : EmployeeService, private router : Router) {
   }
 
-  performFilter() : IEmployee[] {
-    this.filterByName = this.filterByName.toLowerCase()
-    return this.employeeData.filter((employee: IEmployee) => employee.firstName.toLowerCase().includes(this.filterByName))
+  onSelected() {
+    this.filterByName.next(this.filterName);
+    return this.employees$
   }
-
-
 
   test() {
     const apples= ['apple1', 'apple2']
@@ -87,21 +111,8 @@ export class DisplayEmployeesComponent implements OnInit, OnDestroy{
     this.router.navigate(["/employees/create"])
   }
 
- loadData() {
-   this.subscription.add(this.service.getAllEmployee().subscribe( response => {
-      this.employeeData = response;
-
-    }, error => {
-      console.log("Fail Get", error)
-    }))
-  }
-
   ngOnInit(): void {
-    this.loadData()
     this.test()
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe()
-  }
 }

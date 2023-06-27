@@ -1,29 +1,71 @@
-<div class="employee-container">
-  <div class="employee-fields">
-    <div class="employee-title">Create Employee</div>
-    <mat-form-field class="custom-mat-form-field"  >
-      <mat-label >First Name</mat-label>
-      <input matInput name="firstName" [(ngModel)]="firstName" required>
-    </mat-form-field >
-    <mat-form-field class="custom-mat-form-field"  >
-      <mat-label>Last Name</mat-label>
-      <input matInput name="lastName" [(ngModel)]="lastName" required>
-    </mat-form-field>
-    <mat-form-field class="custom-mat-form-field"  >
-      <mat-label>Email</mat-label>
-      <input matInput name="email" [(ngModel)]="email" required>
-    </mat-form-field>
-    <mat-form-field class="custom-mat-form-field"  >
-      <mat-label>Authority</mat-label>
-      <mat-select multiple required name="authority" [(ngModel)]="authority">
-        <mat-option value="EMPLOYEE">EMPLOYEE</mat-option>
-        <mat-option value="MANAGER">MANAGER</mat-option>
-        <mat-option value="ADMIN">ADMIN</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="buttons-contain">
-      <button mat-raised-button class="custom-mat-form-button" color="primary" (click)="onSubmit()" [disabled]="!firstName || !lastName || !email || !authority">SUBMIT</button>
-      <button mat-raised-button class="custom-mat-form-button" (click)="handleCancelButton()" >Cancel</button></div>
-  </div>
-</div>
+<form novalidate (ngSubmit)="onSubmit(signupForm)" #signupForm="ngForm">
+  <div class="employee-container">
+      <div class="employee-fields">
+        <div class="employee-title">Create Employee</div>
+        <mat-form-field class="custom-mat-form-field"  >
+          <mat-label >First Name</mat-label>
+          <input matInput
+                 name="firstName"
+                 type="text"
+                 minlength="3"
+                 #firstNameVar="ngModel"
+                 [(ngModel)]="employee.firstName"
+                 required>
+          <span *ngIf="firstNameVar.errors?.['required'] && firstNameVar.touched" class="error-fields"   >
+            Please enter your first name
+          </span>
+          <span *ngIf="firstNameVar.errors?.['minlength']" class="error-fields"   >
+            Please enter min 3 characters
+          </span>
+        </mat-form-field >
+        <mat-form-field class="custom-mat-form-field"  >
+          <mat-label>Last Name</mat-label>
+          <input matInput
+                 id="lastNameId"
+                 name="lastName"
+                 [(ngModel)]="employee.lastName"
+                 minlength="3"
+                 type="text"
+                 #lastNameVar="ngModel"
 
+                 required>
+          <span *ngIf="lastNameVar.errors?.['required'] && lastNameVar.touched" class="error-fields"   >
+            Please enter your last name
+          </span>
+          <span *ngIf="lastNameVar.errors?.['minlength']" class="error-fields"   >
+            Please enter min 3 characters
+          </span>
+        </mat-form-field>
+
+        <mat-form-field class="custom-mat-form-field"  >
+          <mat-label>Email</mat-label>
+          <input matInput
+                 id="emailId"
+                 name="email"
+                 type="email"
+                 #emailVar="ngModel"
+                 [(ngModel)]="employee.email"
+                 email
+                 required>
+          <span *ngIf="emailVar.errors?.['required'] && emailVar.touched" class="error-fields"   >
+            Please enter a email
+          </span>
+          <span *ngIf="emailVar.errors?.['email']" class="error-fields">
+              Please enter a valid email address.
+            </span>
+        </mat-form-field>
+        <mat-form-field class="custom-mat-form-field"  >
+          <mat-label>Authority</mat-label>
+          <mat-select multiple required name="authority" [(ngModel)]="employee.authority">
+            <mat-option value="EMPLOYEE">EMPLOYEE</mat-option>
+            <mat-option value="MANAGER">MANAGER</mat-option>
+            <mat-option value="ADMIN">ADMIN</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="buttons-contain">
+          <button mat-raised-button type="submit" class="custom-mat-form-button" color="primary"  [disabled]="!signupForm.valid" >SUBMIT</button>
+          <button mat-raised-button class="custom-mat-form-button" (click)="handleCancelButton()" >Cancel</button></div>
+      </div>
+
+  </div>
+</form>
