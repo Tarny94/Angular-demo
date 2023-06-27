@@ -1,8 +1,9 @@
 import { Component , OnDestroy} from '@angular/core';
 import {Subscription} from "rxjs";
 import {EmployeeService} from "./employee.service";
-import {IEmployee} from "./employee";
+import {IEmployee, Employee} from "./employee";
 import {Router} from "@angular/router";
+import {FormControl, NgForm} from "@angular/forms";
 
 
 @Component({
@@ -12,33 +13,32 @@ import {Router} from "@angular/router";
 })
 export class EmployeeComponent implements  OnDestroy{
 
-  firstName!: string;
-  lastName!: string;
-  email!: string ;
-  authority!: string[];
+  employee = new Employee();
 
   subscription: Subscription = new Subscription();
+
+  invalid: any = {
+    color: 'red'
+  }
 
   constructor(public service : EmployeeService, private router : Router) {
   }
 
-  onSubmit() {
-    console.log("#1",this.firstName,this.lastName,this.email,this.authority)
+  onSubmit(form : NgForm) {
 
-    const employee : IEmployee = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      authority: this.authority
-    }
-
-    this.subscription.add(this.service.createEmployee(employee).subscribe( response => {
+    console.log("#em:",form)
+    this.subscription.add(this.service.createEmployee(form.value).subscribe( response => {
 
       console.log("Successful", response)
-      this.router.navigate(['/employees']);
+      form.reset();
+      this.handleCancelButton();
     }, error => {
       console.log("Fail", error)
     }))
+  }
+
+  handleCancelButton() {
+    this.router.navigate(['/employees']);
   }
 
   ngOnDestroy(): void {

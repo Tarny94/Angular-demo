@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {Observable, shareReplay} from 'rxjs';
 import {HttpClient} from "@angular/common/http";
 
 interface IEmployee {
@@ -15,6 +15,10 @@ interface IEmployee {
 })
 export class EmployeeService {
   url: string = 'http://localhost:8080/employees';
+
+  employees$  = this.http.get<IEmployee[]>(this.url).pipe(
+    // shareReplay(1),
+  ) ;
 
   constructor(private http: HttpClient) {}
 
