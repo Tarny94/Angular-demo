@@ -1,20 +1,22 @@
-<form novalidate (ngSubmit)="onSubmit(signupForm)" #signupForm="ngForm">
+<form novalidate
+      (ngSubmit)="onSubmit()"
+      [formGroup]="customerForm">
   <div class="employee-container">
       <div class="employee-fields">
         <div class="employee-title">Create Employee</div>
         <mat-form-field class="custom-mat-form-field"  >
           <mat-label >First Name</mat-label>
           <input matInput
-                 name="firstName"
                  type="text"
-                 minlength="3"
-                 #firstNameVar="ngModel"
-                 [(ngModel)]="employee.firstName"
-                 required>
-          <span *ngIf="firstNameVar.errors?.['required'] && firstNameVar.touched" class="error-fields"   >
+                 formControlName="firstName"
+                 >
+          <span *ngIf="customerForm.get('firstName')?.errors?.['required']
+                      && customerForm.get('firstName')?.dirty"
+                      class="error-fields">
             Please enter your first name
           </span>
-          <span *ngIf="firstNameVar.errors?.['minlength']" class="error-fields"   >
+          <span *ngIf="customerForm.get('firstName')?.errors?.['minlength']"
+                class="error-fields"   >
             Please enter min 3 characters
           </span>
         </mat-form-field >
@@ -22,17 +24,13 @@
           <mat-label>Last Name</mat-label>
           <input matInput
                  id="lastNameId"
-                 name="lastName"
-                 [(ngModel)]="employee.lastName"
-                 minlength="3"
                  type="text"
-                 #lastNameVar="ngModel"
-
-                 required>
-          <span *ngIf="lastNameVar.errors?.['required'] && lastNameVar.touched" class="error-fields"   >
+                 formControlName="lastName"
+                >
+          <span *ngIf="customerForm.get('lastName')?.errors?.['required'] && customerForm.get('lastName')?.dirty" class="error-fields"   >
             Please enter your last name
           </span>
-          <span *ngIf="lastNameVar.errors?.['minlength']" class="error-fields"   >
+          <span *ngIf="customerForm.get('lastName')?.errors?.['minlength']" class="error-fields"   >
             Please enter min 3 characters
           </span>
         </mat-form-field>
@@ -41,29 +39,33 @@
           <mat-label>Email</mat-label>
           <input matInput
                  id="emailId"
-                 name="email"
                  type="email"
-                 #emailVar="ngModel"
-                 [(ngModel)]="employee.email"
-                 email
-                 required>
-          <span *ngIf="emailVar.errors?.['required'] && emailVar.touched" class="error-fields"   >
+                 formControlName="email"
+                 >
+          <span *ngIf="customerForm.get('email')?.errors?.['required'] && customerForm.get('email')?.dirty" class="error-fields"   >
             Please enter a email
           </span>
-          <span *ngIf="emailVar.errors?.['email']" class="error-fields">
+          <span *ngIf="customerForm.get('email')?.errors?.['email']" class="error-fields">
               Please enter a valid email address.
             </span>
         </mat-form-field>
         <mat-form-field class="custom-mat-form-field"  >
           <mat-label>Authority</mat-label>
-          <mat-select multiple required name="authority" [(ngModel)]="employee.authority">
+          <mat-select multiple formControlName="authority" >
             <mat-option value="EMPLOYEE">EMPLOYEE</mat-option>
             <mat-option value="MANAGER">MANAGER</mat-option>
             <mat-option value="ADMIN">ADMIN</mat-option>
           </mat-select>
+          <span *ngIf="customerForm.get('authority')?.errors?.['required'] && customerForm.get('authority')?.dirty" class="error-fields"   >
+            Please select an topic
+          </span>
         </mat-form-field>
         <div class="buttons-contain">
-          <button mat-raised-button type="submit" class="custom-mat-form-button" color="primary"  [disabled]="!signupForm.valid" >SUBMIT</button>
+          <button mat-raised-button type="submit"
+                  class="custom-mat-form-button" color="primary"
+                  [title]="customerForm.valid? 'Save data' : 'Disabled until complete all data'"
+                  [disabled]="!customerForm.valid"
+          >SUBMIT</button>
           <button mat-raised-button class="custom-mat-form-button" (click)="handleCancelButton()" >Cancel</button></div>
       </div>
 

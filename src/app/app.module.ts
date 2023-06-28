@@ -8,7 +8,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { DisplayEmployeesComponent } from './employee/display-employees/display-employees.component';
 import {MatTableModule} from "@angular/material/table";
@@ -29,6 +29,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatSelectModule,
     MatButtonModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatTableModule,
     MatPaginatorModule

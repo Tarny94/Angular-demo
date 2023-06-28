@@ -1,9 +1,9 @@
-import { Component , OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {EmployeeService} from "./employee.service";
-import {IEmployee, Employee} from "./employee";
+import {Employee} from "./employee";
 import {Router} from "@angular/router";
-import {FormControl, NgForm} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -11,8 +11,8 @@ import {FormControl, NgForm} from "@angular/forms";
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css']
 })
-export class EmployeeComponent implements  OnDestroy{
-
+export class EmployeeComponent implements OnInit,  OnDestroy{
+  customerForm!: FormGroup;
   employee = new Employee();
 
   subscription: Subscription = new Subscription();
@@ -21,16 +21,18 @@ export class EmployeeComponent implements  OnDestroy{
     color: 'red'
   }
 
-  constructor(public service : EmployeeService, private router : Router) {
+  constructor(public service : EmployeeService,
+              private router : Router,
+              private fb: FormBuilder
+  ) {
   }
 
-  onSubmit(form : NgForm) {
+  onSubmit() {
 
-    console.log("#em:",form)
-    this.subscription.add(this.service.createEmployee(form.value).subscribe( response => {
+    console.log("#2", this.customerForm)
+    this.subscription.add(this.service.createEmployee(this.customerForm.value).subscribe( response => {
 
       console.log("Successful", response)
-      form.reset();
       this.handleCancelButton();
     }, error => {
       console.log("Fail", error)
@@ -43,6 +45,15 @@ export class EmployeeComponent implements  OnDestroy{
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
+  }
+
+  ngOnInit(): void {
+    this.customerForm = this.fb.group({
+      firstName : ["", [Validators.required,Validators.minLength(3)]],
+      lastName : ["", [Validators.required,Validators.minLength(3)]],
+      email: ["", [Validators.required, Validators.email]],
+      authority: [[],[Validators.required]]
+    })
   }
 
 
