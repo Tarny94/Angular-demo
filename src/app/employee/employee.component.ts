@@ -4,7 +4,7 @@ import {EmployeeService} from "./employee.service";
 import {Employee} from "./employee";
 import {Router} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-employee',
@@ -43,6 +43,13 @@ export class EmployeeComponent implements OnInit,  OnDestroy{
     this.router.navigate(['/employees']);
   }
 
+ phoneValidator(): boolean{
+    const phoneNumber = this.customerForm.value.phone;
+    const hasLetters = /[a-zA-Z]/.test(phoneNumber);
+
+    return hasLetters ;
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
   }
@@ -52,6 +59,7 @@ export class EmployeeComponent implements OnInit,  OnDestroy{
       firstName : ["", [Validators.required,Validators.minLength(3)]],
       lastName : ["", [Validators.required,Validators.minLength(3)]],
       email: ["", [Validators.required, Validators.email]],
+      phone: ["", [Validators.required,Validators.minLength(6)]],
       authority: [[],[Validators.required]]
     })
   }

@@ -29,7 +29,6 @@ export class DisplayEmployeesComponent implements OnInit{
   filterByName= new BehaviorSubject<string>("");
   filterByNameAction$ = this.filterByName.asObservable();
 
-  dataSource!: MatTableDataSource<IEmployee>;
 
   name = "Angular "+ VERSION.major
 
@@ -41,11 +40,15 @@ export class DisplayEmployeesComponent implements OnInit{
   ).pipe(
        tap(item => console.log("#item" ,item)),
          map(([items, filteredName]) =>
-           items.filter(item  => filteredName !== ""? item.firstName.toLowerCase().includes(filteredName.toLowerCase())  : true)
+           items.filter(item  => filteredName !== ""? item.firstName.toLowerCase().includes(filteredName.toLowerCase())  : true),
          ),
   ) ;
 
   constructor(private service : EmployeeService, private router : Router) {
+  }
+
+  onClick(employeeId: string) {
+    this.router.navigate(['employees',employeeId])
   }
 
   onSelected() {
