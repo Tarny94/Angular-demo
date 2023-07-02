@@ -49,6 +49,26 @@
               Please enter a valid email address.
             </span>
         </mat-form-field>
+
+        <mat-form-field class="custom-mat-form-field"  >
+          <mat-label>Phone</mat-label>
+          <input matInput
+                 id="phoneId"
+                 type="tel"
+                 placeholder="Phone"
+                 formControlName="phone"
+          >
+          <span *ngIf="customerForm.get('phone')?.errors?.['required'] && customerForm.get('phone')?.dirty" class="error-fields">
+              Please enter a phone number.
+            </span>
+          <span *ngIf="customerForm.get('phone')?.errors?.['minlength']" class="error-fields" >
+              Please enter min 6 numbers.
+            </span>
+          <span *ngIf="phoneValidator()  && customerForm.get('phone')?.dirty" class="error-fields">
+              It must not contain letters
+            </span>
+        </mat-form-field>
+
         <mat-form-field class="custom-mat-form-field"  >
           <mat-label>Authority</mat-label>
           <mat-select multiple formControlName="authority" >

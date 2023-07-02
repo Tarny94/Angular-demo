@@ -1,33 +1,35 @@
 
 <div class="em-container">
+
   <mat-form-field class="custom-mat-form-field"  >
     <mat-label >Search</mat-label>
     <input matInput  [(ngModel)]="filterName"  (ngModelChange)="onSelected()">
   </mat-form-field >
-
+<app-employee-carts-display></app-employee-carts-display>
   <div class="em-details">
     <h1>Employee Table</h1>
+
     <button mat-raised-button class="custom-mat-form-button" color="primary" (click)="handleAddEmployee()">ADD EMPLOYEE</button>
 
     <table  mat-table [dataSource]="employees$" >
       <ng-container matColumnDef="firstName">
         <th mat-header-cell *matHeaderCellDef>First Name</th>
-        <td mat-cell *matCellDef="let element" mat-cell>{{element.firstName}}</td>
+        <td mat-cell *matCellDef="let element" class="employee-list-navigate-name" (click)="onClick(element.id)">{{element.firstName}}</td>
       </ng-container>
 
       <ng-container matColumnDef="lastName">
         <th mat-header-cell *matHeaderCellDef>Last Name</th>
-        <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+        <td mat-cell class="employee-list-navigate-name" *matCellDef="let element" (click)="onClick(element.id)">{{element.lastName}}</td>
       </ng-container>
 
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let element">{{element.email}}</td>
+        <td mat-cell class="employee-list-navigate-name" *matCellDef="let element" (click)="onClick(element.id)">{{element.email}}</td>
       </ng-container>
 
       <ng-container matColumnDef="authority">
         <th mat-header-cell *matHeaderCellDef>Authority</th>
-        <td mat-cell *matCellDef="let element">{{element.authority}}</td>
+        <td mat-cell class="employee-list-navigate-name" *matCellDef="let element" (click)="onClick(element.id)">{{element.authority}}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
